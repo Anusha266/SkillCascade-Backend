@@ -37,7 +37,6 @@ const createSendResponse=(User,statuscode,res)=>{
 
 
 exports.signup=asyncErrorHandler(async(req,res,next)=>{
-        console.log("user creatinggg");
         const newUser=await user.create(req.body);
         createSendResponse(newUser,201,res);
 
