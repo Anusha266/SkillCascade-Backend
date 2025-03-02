@@ -57,7 +57,7 @@ exports.login=asyncErrorHandler(async(req,res,next)=>{
         const isMatch=await User.comparePassword(password,User.password);
 
         if(!isMatch){
-                const error=new customError("Incorrect password");
+                const error=new customError("Incorrect password",401);
                 return next(error);
         }
 
@@ -82,14 +82,11 @@ exports.protect=asyncErrorHandler(async(req,res,next)=>{
         }
         //2.validate te the token
         const decodedToken=await util.promisify(jwt.verify)(token,process.env.SECRET_STR);
-        console.log(decodedToken);
-
 
 
         //3.user is logged in or not
         const User=await user.findById(decodedToken.id);
 
-        console.log(User);
         if(!User){
                 const error=new customError(`user not exists with this id::${decodedToken.id}`,401);
                 next(error);

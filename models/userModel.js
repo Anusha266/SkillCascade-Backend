@@ -15,8 +15,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please enter your email."],
         unique: true,
-        lowercase: true,
-        validate: [validator.isEmail, "Please enter a valid email."]
     },
     photo: {
         type: String
@@ -24,8 +22,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, "Please enter a password"],
-        minlength: 5,
-        select: false // Hides password when querying users
+        minlength: 3,
     },
     active: {
         type: Boolean,
@@ -53,6 +50,15 @@ const userSchema = new mongoose.Schema({
     ]
 });
 
+
+userSchema.pre('save',async function(next){
+
+    //encrypt the password
+    this.password=await bcrypt.hash(this.password,12);
+    next();
+
+
+})
 
 
 userSchema.pre(/^find/, function(next) {

@@ -1,9 +1,6 @@
 const customError = require("../Utils/customError");
 
 const devErrors=(res,error)=>{
-        console.log("***************\n*******\n****\n******");
-        console.log(res);
-        console.log(error);
 
         res.status(error.statusCode).json({
                 status:error.status,
@@ -37,10 +34,8 @@ const castHandleError=(err)=>{
         
 }
 module.exports=GlobalErrorHandler=(error,req,res,next)=>{
-        //console.log(error);
         error.statusCode=error.statusCode || 500;
         error.status=error.status || "error";
-        //console.log(process.env.MODE_ENV);
         if(process.env.NODE_ENV === 'development'){
                 devErrors(res,error);
                 
@@ -49,7 +44,6 @@ module.exports=GlobalErrorHandler=(error,req,res,next)=>{
         else if(process.env.NODE_ENV === 'production'){
 
                 if(error.name ==='CastError'){
-                        console.log(error.name);
                        error=castHandleError(error);
                 }
                 else if(error.code==11000){
