@@ -1,7 +1,7 @@
 //import package
 const express= require('express');
 
-
+const cors=require('cors');
 const morgan=require('morgan');
 
 const authRouter=require('./Routes/authroutes');
